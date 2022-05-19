@@ -1,0 +1,4 @@
+name: Holograms
+version: 1.0.0
+main: ru.nbk.hologram.Main
+api-version: 1.16
