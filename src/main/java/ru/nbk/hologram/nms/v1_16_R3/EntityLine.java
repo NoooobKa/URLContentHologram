@@ -72,6 +72,12 @@ public class EntityLine extends EntityArmorStand implements HologramLine{
 	}
 
 	@Override
+	public void setVisible(boolean visible) {
+		setCustomNameVisible(!visible);
+		refresh();
+	}
+	
+	@Override
 	public void refresh() {
 		PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(this.getId(), this.getDataWatcher(),true);
 		sendPacketForAll(meta);

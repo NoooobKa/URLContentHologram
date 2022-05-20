@@ -17,6 +17,8 @@ public interface HologramLine extends Nameable{
 	
 	void hide();
 	
+	void setVisible(boolean visible);
+	
 	void refresh();
 		
 }

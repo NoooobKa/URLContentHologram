@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import ru.nbk.hologram.Main;
+import ru.nbk.hologram.api.HologramManagerImpl.LineFactory;
 import ru.nbk.hologram.api.util.Hologram;
 import ru.nbk.hologram.api.util.HologramLine;
 
@@ -15,12 +15,15 @@ public class HologramImpl implements Hologram{
 
 	private static final double SPACE = 0.3D;
 	
+	private LineFactory lineFactory;
 	private final UUID id;
 	private Location location;
 	private List<HologramLine> lines;
 	private boolean visible;
 	
-	public HologramImpl(Location location) {
+	
+	public HologramImpl(Location location, LineFactory lineFactory) {
+		this.lineFactory = lineFactory;
 		this.id = UUID.randomUUID();
 		this.location = location;
 		this.lines = new ArrayList<>();
@@ -58,7 +61,7 @@ public class HologramImpl implements Hologram{
 
 	@Override
 	public void addLine(String text) {
-		HologramLine line = Main.getInstance().getHologramManager().createLine();
+		HologramLine line = lineFactory.product();
 		
 		line.setName(text);
 		
@@ -75,11 +78,7 @@ public class HologramImpl implements Hologram{
 		this.visible = visible;
 		
 		lines.forEach(line -> {
-			if (visible) {
-				line.show();
-			}else {
-				line.hide();
-			}
+			line.setVisible(visible);
 		});
 	}
 

@@ -11,6 +11,9 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
+import com.google.inject.Inject;
+
+import ru.nbk.hologram.Main;
 import ru.nbk.hologram.api.util.Hologram;
 import ru.nbk.hologram.api.util.HologramLine;
 import ru.nbk.hologram.api.util.HologramManager;
@@ -20,9 +23,11 @@ public class HologramManagerImpl implements HologramManager{
 
 	private LineFactory lineFactory;
 	private List<Hologram> holograms;
+	@SuppressWarnings("unused")
 	private HologramsHandler handler;
 	
-	public HologramManagerImpl(Plugin plugin) {
+	@Inject
+	public HologramManagerImpl(Main plugin) {
 		this.lineFactory = new LineFactory();
 		this.holograms = new ArrayList<>();
 		this.handler = new HologramsHandler(holograms, plugin);
@@ -30,7 +35,7 @@ public class HologramManagerImpl implements HologramManager{
 	
 	@Override
 	public Hologram createHologram(Location location) {
-		Hologram h = new HologramImpl(location);
+		Hologram h = new HologramImpl(location, lineFactory);
 		
 		holograms.add(h);
 		
@@ -43,7 +48,7 @@ public class HologramManagerImpl implements HologramManager{
 	}
 	
 	
-	private static class LineFactory {
+	static class LineFactory {
 		
 		private String version;
 		

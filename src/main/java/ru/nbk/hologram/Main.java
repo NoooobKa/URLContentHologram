@@ -2,39 +2,28 @@ package ru.nbk.hologram;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import co.aikar.commands.PaperCommandManager;
-import ru.nbk.hologram.api.HologramManagerImpl;
-import ru.nbk.hologram.api.util.HologramManager;
 import ru.nbk.hologram.command.HologramCommands;
 import ru.nbk.hologram.command.WrappedURL;
 
 public class Main extends JavaPlugin{
 
-	private static Main INSTANCE;
-	private static PaperCommandManager cmdManager;
-	private HologramManager holoManager;
+	private Injector injector;
+	private PaperCommandManager cmdManager;
 	
-	public void onEnable() {
-		INSTANCE = this;
+	public void onEnable() {		
+		this.injector = Guice.createInjector(new HologramModule());
+		this.cmdManager = injector.getInstance(PaperCommandManager.class);
 		registerCommands();
-		this.holoManager = new HologramManagerImpl(this);
-	}
-	
-	public static Main getInstance() {
-		return INSTANCE;
-	}
-	
-	public HologramManager getHologramManager() {
-		return holoManager;
 	}
 	
 	private void registerCommands() {
-		cmdManager = new PaperCommandManager(this);
-		
 		cmdManager.getCommandContexts().registerContext(WrappedURL.class, WrappedURL.getContextResolver());
 		
-		cmdManager.registerCommand(new HologramCommands());
+		cmdManager.registerCommand(injector.getInstance(HologramCommands.class));
 	}
-	
 	
 }
