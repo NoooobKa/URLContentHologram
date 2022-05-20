@@ -15,8 +15,8 @@ public class Main extends JavaPlugin{
 	private PaperCommandManager cmdManager;
 	
 	public void onEnable() {		
-		this.injector = Guice.createInjector(new HologramModule());
-		this.cmdManager = injector.getInstance(PaperCommandManager.class);
+		this.injector = Guice.createInjector(new HologramModule(this));
+		this.cmdManager = new PaperCommandManager(this);
 		registerCommands();
 	}
 	

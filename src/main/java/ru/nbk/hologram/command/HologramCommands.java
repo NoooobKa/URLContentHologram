@@ -17,8 +17,12 @@ import ru.nbk.hologram.api.util.HologramManager;
 @CommandPermission("addholo.perm")
 public class HologramCommands extends BaseCommand{
 	
-	@Inject
 	private HologramManager manager;
+	
+	@Inject
+	public HologramCommands(HologramManager manager) {
+		this.manager = manager;
+	}
 	
 	@Default
 	public void onHoloAdd(Player p, WrappedURL wrapped) {
